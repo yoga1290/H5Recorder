@@ -1,0 +1,9 @@
+[{
+	"page": "sample.html",
+	"startHash": "start",
+	"endHash": "blue"
+}, {
+	"page": "sample.html",
+	"startHash": "blue",
+	"endHash": "stop"
+}]

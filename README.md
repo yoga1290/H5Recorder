@@ -1,5 +1,5 @@
 # Overview
-Headless page video recorder, you simply provide array of pages and their starting and ending URI hash and get a video for each entry.
+Headless page video recorder, you simply provide array of paths ,relative to `www` directory, to the diesred pages and their starting and ending URI hash and get a video for each entry.
 
 # Install
 
@@ -17,4 +17,4 @@ Headless page video recorder, you simply provide array of pages and their starti
 + that's all, you'll get `v0.mp4, v1.mp4,...` files in the project directory depending on the number of entries provided in the JSON file.
 
 # Credit
-+ this was inspired by [phanan's snippet](https://gist.github.com/phanan/e03f75082e6eb114a35c#file-runner-js), modified & wrapped to meet my needs :P
++ this was inspired by [phanan's snippet](https://gist.github.com/phanan/e03f75082e6eb114a35c#file-runner-js), modified & wrapped to more flexible; just meets my needs :P

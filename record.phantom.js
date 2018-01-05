@@ -4,13 +4,11 @@
 // phantomjs runner.js | ffmpeg -y -c:v png -f image2pipe -r 24 -t 10  -i - -c:v libx264 -pix_fmt yuv420p -movflags +faststart output.mp4
 const system = require('system')
 
-var serverPort = system.args[1]
-var pagePath = system.args[2]
-var startRecordHash = system.args[3]
-var endRecordHash = system.args[4]
+var address = system.args[1]
+var startRecordHash = system.args[2]
+var endRecordHash = system.args[3]
 
 var page = require('webpage').create(),
-    address = 'http://localhost:' + serverPort + '/' + pagePath,
     // duration = 3, // duration of the video, in seconds
     framerate = 24, // number of frames per second. 24 is a good value.
     counter = 0,

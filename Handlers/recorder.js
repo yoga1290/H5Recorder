@@ -10,6 +10,8 @@ function getCmd(entry, output) {
 		${entry.page} \
 		${entry.startHash} \
 		${entry.endHash} \
+		${entry.size.w} \
+		${entry.size.h} \
 	| ffmpeg \
 			-c:v png \
 			-f image2pipe \
@@ -21,35 +23,39 @@ function getCmd(entry, output) {
 			-y ${output};`.split('\t').join('')
 }
 
-let i = 0
 function handle(entries, cb) {
 console.log('TODO')
 //cb()
 // /*
+	let outputs = []
   let loop = (i) => {
 
-  	let cmd = getCmd(entries[i], `v${i}.mp4`)
-  	console.log('executing', cmd)
+		let output = `v${new Date().getTime() + '-' + i}.mp4`
+  	let cmd = getCmd(entries[i], output)
+  	console.log('recorder', 'executing', cmd)
   	exec(cmd, (err, stdout, stderr) => {
-  		if (err) {
+			outputs.push(output)
+
+			console.log(`stdout: ${stdout}`);
+			console.error(`stderr: ${stderr}`);
+
+			if (err) {
   			// node couldn't execute the command
-  			console.log('error', err)
+  			console.error('error', err)
+				cb(err, outputs)
   			return;
   		}
 
   		// the *entire* stdout and stderr (buffered)
-  		console.log(`stdout: ${stdout}`);
-  		console.log(`stderr: ${stderr}`);
   		// app.exit()
-
-			i++
-  		if (i >= entries.length) {
+  		if (i + 1 >= entries.length) {
   			if (cb) {
-          cb(null, {})
+					console.log('recorder', outputs.join(', '))
+          cb(false, outputs)
 					//TODO:
         }
   		} else {
-  			loop(i)
+  			loop(i + 1)
   		}
   	});
   }
@@ -62,10 +68,13 @@ console.log('TODO')
 exports.record = function (entries, cb) {
   if (cb) return handle(entries, cb)
 
-  return new Promise(function (resolve, reject) {
+  return new Promise( (resolve, reject) => {
+
     handle(entries, function (err, data) {
       if (err) return reject(err)
+			console.log('recorder promise', err, data, resolve)
       resolve(data)
     })
+
   })
 }

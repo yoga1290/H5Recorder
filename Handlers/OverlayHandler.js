@@ -1,45 +1,61 @@
-
+const { exec } = require('child_process');
 const { colorKey } = require('../ffmpegUtil')
 
-/*
-[{
-  scale, colorkey, similarity, video
-}]
-*/
-function handle(entries, cb) {
-  let cmds = []
-  entries.forEach((entry, i) => {
+function handle(entries, inputs, cb) {
+console.log('Overlay', entries, inputs)
+//cb()
+// /*
+  let loop = (i) => {
 
-    if (entry.overlay) {
+  	let cmd = colorKey(entries[i], inputs[i], `sub${i}.mp4`)
 
-      var filters = ''
-      var videoStreams = []
-      entry.overlay.forEach((overlay, j) => {
-        videoStreams.push(overlay.video)
-        filters +=
-        `[${j+1}] ${overlay.scale}[scaled${j+1}] ;\
-        [scaled${j+1}] colorkey=color=${overlay.colorkey ? overlay.colorkey:'green'}:similarity=${entry.overlay.similarity} [keyed${j+1}];\
-        [0][keyed${j+1}]overlay;`
-      })
+    if (cmd) {
+      console.log('overlay', 'executing', cmd)
+      exec(cmd, (err, stdout, stderr) => {
+    		if (err) {
+    			// node couldn't execute the command
+    			console.error('error', err)
+          cb(err)
+    			return;
+    		}
 
-      let cmd = `ffmpeg \
-          -i v${i}.mp4 \
-          ${videoStreams.map((s)=>{return ' -i' + s})} \
-          -filter_complex "${filters}" -y sub${i}.mp4`.split('\t').join('')
+    		// the *entire* stdout and stderr (buffered)
+    		console.log(`stdout: ${stdout}`);
+    		console.error(`stderr: ${stderr}`);
+    		// app.exit()
 
+    		if (i + 1 >= entries.length) {
+    			if (cb) {
+            cb(null, {})
+  					//TODO:
+          }
+    		} else {
+    			loop(i + 1)
+    		}
+    	});
 
+    } else if (i < entries.length) {
+      loop(i + 1)
+    } else {
+      cb(null, {})
     }
-  })
+
+  }
+
+  if (entries.length > 0) {
+    loop(0)
+  }
+//*/
 }
 
 
 // Making APIs that support both callbacks and promises
 // RE: https://developer.ibm.com/node/2016/08/24/promises-in-node-js-an-alternative-to-callbacks/
-exports.handleOverlay = function (entries, cb) {
-  if (cb) return handle(entries, cb)
+exports.handleOverlay = function (entries, inputs, cb) {
+  if (cb) return handle(entries, inputs, cb)
 
   return new Promise(function (resolve, reject) {
-    handle(entries, function (err, data) {
+    handle(entries, inputs, function (err, data) {
       if (err) return reject(err)
       resolve(data)
     })

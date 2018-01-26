@@ -10,7 +10,37 @@ Headless page video recorder, you simply provide array of paths ,relative to `ww
 
 # Run
 
-+ First, you'll need to provide a JSON file in the following format: `[{page,startHash,endHash}]`; check [sample.json](https://github.com/yoga1290/H5Recorder/blob/master/sample.json)
++ First, you'll need to provide a JSON file in the following format: `[{page, startHash, endHash, size{w, h}}]`; check [sample.json](https://github.com/yoga1290/H5Recorder/blob/master/sample.json
+  + other options:
+
+```javascript
+[{
+  // a free port will be determined on runtime
+	"page": "http://localhost/new30.html",
+	"startHash": "0",
+	"endHash": "end",
+	"size": {
+		"w": 400,
+		"h": 710
+	},
+	"overlay": [{ //optional
+		"video": "overlay.mp4",
+		"colorkey": "black", //default: green
+		"similarity": 0.7, //optional
+		"time": { //optional
+			"start": 0,
+			"end": 8
+		},
+		"crop": {
+			"aspectRatio": 0.5625,
+			"offset": { // optional
+				"x": 0.3, // [0-1]
+				"y": 0 // [0-1]
+			}
+		}
+	}]
+}]
+```
 
 + run `npm start [data.json]`, where `data.json` is the provided input file.
 

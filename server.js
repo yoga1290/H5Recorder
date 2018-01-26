@@ -2,7 +2,7 @@ const { exec } = require('child_process');
 const express = require('express');
 const http = require('http')
 const path = require('path');
-const { Recorder } = require('./Handlers')
+const { Recorder, OverlayHandler } = require('./Handlers')
 var app = express();
 
 
@@ -35,8 +35,11 @@ server.listen(() => {
 
 	console.log('Server started at ', server.address().port) //process.argv[2]
 
-	Recorder.record(data).then((e, result) => {
-		server.close()
-		process.exit(0)
+	Recorder.record(data).then((screenRecords) => {
+		console.log('recorder/screenRecords', screenRecords)
+		OverlayHandler.handleOverlay(data, screenRecords).then((e, result) => {
+			server.close()
+			process.exit(0)
+		})
 	})
 })

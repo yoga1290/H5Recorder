@@ -5,15 +5,17 @@
 const system = require('system')
 
 var address = system.args[1]
+// var pagePath = system.args[2]
 var startRecordHash = system.args[2]
 var endRecordHash = system.args[3]
 
 var page = require('webpage').create(),
+    // address = 'http://localhost:' + serverPort + '/' + pagePath,
     // duration = 3, // duration of the video, in seconds
     framerate = 24, // number of frames per second. 24 is a good value.
     counter = 0,
-    width = 600,
-    height = 500;
+    width = parseInt(system.args[4]),
+    height = parseInt(system.args[5]);
 
 page.viewportSize = { width: width, height: height };
 
@@ -28,6 +30,7 @@ page.onUrlChanged = function(targetUrl) {
   }
 };
 
+var cnt = 0
 page.open(address, function(status) {
     if (status !== 'success') {
         console.log('Unable to load the address!');
@@ -39,6 +42,9 @@ page.open(address, function(status) {
             window.setInterval(function () {
                 if (record) {
                   page.render('/dev/stdout', { format: 'png' });
+                  // page.render('/process/stdout/write', { format: 'png' });
+                  // phantom.exit(0)
+                  // page.render('screenshot' + cnt++, { format: 'png' });
                 }
             }, 1/framerate);
         }, 200);

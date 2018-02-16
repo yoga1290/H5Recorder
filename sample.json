@@ -2,8 +2,36 @@
 	"page": "sample.html",
 	"startHash": "start",
 	"endHash": "blue"
-}, {
+	"size": {
+		"w": 400,
+		"h": 710
+	},
+	"overlay": [{
+		"video": "oo17.mp4",
+		"colorkey": "black",
+		"similarity": 0.4,
+
+		"crop": {
+			"aspectRatio": 0.5625,
+			"offset": {
+				"x": 0.3,
+				"y": 0
+			}
+		}
+	}, {
 	"page": "sample.html",
 	"startHash": "blue",
 	"endHash": "stop"
+		"video": "overlay.mp4",
+		"colorkey": "green",
+		"similarity": 0.4,
+
+		"crop": {
+			"aspectRatio": 0.5625,
+			"offset": {
+				"x": 0.3,
+				"y": 0
+			}
+		}
+	}]
 }]

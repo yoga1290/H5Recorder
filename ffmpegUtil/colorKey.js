@@ -11,8 +11,6 @@ function colorkey(entry, original, output) {
     var filters = []
     var videoStreams = []
 
-    var recordedPageStream = '0'
-
     entry.overlay.forEach((overlay, j) => {
       console.log('Overlay', 'entry', overlay)
       var aspectRatio = (overlay.crop && overlay.crop.aspectRatio) ? overlay.crop.aspectRatio : (16/9)
@@ -39,15 +37,17 @@ function colorkey(entry, original, output) {
         h=ih*min(${entry.size.w}/iw\\,${entry.size.h}/ih): \
         force_original_aspect_ratio=decrease,setsar=1,\
         pad=${entry.size.w}:${entry.size.h}:(${entry.size.w}-iw)/2:(${entry.size.h}-ih)/2[scaled${j+1}];\
-      [${recordedPageStream}]colorkey=color=${cKey}:similarity=${similarity} [keyed${j+1}];\
-      [scaled${j+1}][keyed${j+1}]overlay ${(j+1<overlay.length) ? ('['+ recordedPageStream + ']'):''}`)
-      recordedPageStream++
+      [${j < 1 ? 0:'overlay'+j}]colorkey=color=${cKey}:similarity=${similarity}[keyed${j+1}];\
+      [scaled${j+1}][keyed${j+1}]overlay[overlay${j + 1}]`)
     })
-
+    //https://ffmpeg.org/ffmpeg-filters.html#Examples-37
+//TODO: :similarity=..
     return `ffmpeg \
         -i ${original} \
         ${videoStreams.join(' ')} \
-        -filter_complex "${filters.join(';')}" -y ${output}`.split('\t').join('')
+        -filter_complex "${filters.join(';').split('\t').join(' ')}" \
+        -map "[overlay${entry.overlay.length}]" \
+        -y ${output}`.split('\t').join('')
   }
 
   return null

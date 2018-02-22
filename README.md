@@ -1,5 +1,8 @@
 # Overview
-Headless page video recorder, you simply provide array of paths ,relative to `www` directory, to the diesred pages and their starting and ending URI hash and get a video for each entry.
+Headless page video recorder, you simply provide array of paths ,relative to `www` directory or a URL to a server webpage, to the desired pages and their starting and ending URI hash and get a video for each entry. Cropping, scaling, color-based overlaying values are optionals
+
+![demo](readme.gif)
+>watch sample output in portrait on mobile's fullscreen mode on [youtube](https://youtu.be/w_RTerk7wtY)
 
 # Install
 

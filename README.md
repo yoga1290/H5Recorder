@@ -13,7 +13,7 @@ Headless page video recorder, you simply provide array of paths ,relative to `ww
 
 # Run
 
-+ First, you'll need to provide a JSON file in the following format: `[{page, startHash, endHash, size{w, h}}]`; check [sample.json](https://github.com/yoga1290/H5Recorder/blob/master/sample.json
++ First, you'll need to provide a JSON file in the following format: `[{page, startHash, endHash, size{w, h}}]`; check [sample.json](https://github.com/yoga1290/H5Recorder/blob/master/sample.json)
   + other options:
 
 ```javascript

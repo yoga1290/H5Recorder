@@ -1,8 +1,9 @@
 {
   "name": "h5recorder",
-  "version": "1.0.0",
-  "description": "Headless page video recorder, you simply provide array of paths ,relative to `www` directory, to the diesred pages and their starting and ending URI hash and get a video for each entry.",
-  "main": "server.js",
+  "version": "0.0.2",
+  "description": "Headless page video recorder, you simply provide array of paths ,relative to local directory or a URL to a server webpage, to the desired pages and their starting and ending URI hash and get a video for each entry.",
+  "main": "index.js",
+  "bin": "cmd.js",
   "dependencies": {
     "express": "^4.16.2",
     "phantomjs-prebuilt": "^2.1.16"
@@ -10,8 +11,16 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node cmd.js"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/yoga1290/H5Recorder.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yoga1290/H5Recorder/issues"
+  },
+  "homepage": "https://github.com/yoga1290/H5Recorder#readme",
+  "author": "yoga1290",
   "license": "ISC"
 }

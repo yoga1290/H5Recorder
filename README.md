@@ -1,5 +1,5 @@
 # Overview
-Headless page video recorder, you simply provide array of paths ,relative to `www` directory or a URL to a server webpage, to the desired pages and their starting and ending URI hash and get a video for each entry. Cropping, scaling, color-based overlaying values are optionals
+Headless page video recorder, you simply provide array of paths ,relative to local directory or a URL to a server webpage, to the desired pages and their starting and ending URI hash and get a video for each entry. Cropping, scaling, color-based overlaying values are optionals
 
 ![demo](readme.gif)
 >watch sample output in portrait on mobile's fullscreen mode on [youtube](https://youtu.be/w_RTerk7wtY)
@@ -9,7 +9,7 @@ Headless page video recorder, you simply provide array of paths ,relative to `ww
 + Unix-like OS or bash-supported console
 + FFMPEG, You will need FFMPEG either installed globally or located in the same project directory.
 + NodeJS & NPM installed
-+ run `npm i` in project directory from terminal.
++ run `npm i h5recorder` in project directory from terminal.
 
 # Run
 
@@ -45,7 +45,14 @@ Headless page video recorder, you simply provide array of paths ,relative to `ww
 }]
 ```
 
-+ run `npm start [data.json]`, where `data.json` is the provided input file.
++ you can execute it from commandline, if installed with a `-g` flag, as `h5recorder $CONFIG $PATH_TO_LOCALHOST`, where `$CONFIG` is the provided input file and `$PATH_TO_LOCALHOST` is the directory served by the web server.
+
++ you can execute it inside a node code as well:
+
+```javascript
+const h5recorder = require('h5recorder')
+h5recorder('./data.json', './www').then((err, result) => {})
+```
 
 + that's all, you'll get `v0.mp4, v1.mp4,...` files in the project directory depending on the number of entries provided in the JSON file.
 

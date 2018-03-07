@@ -50,7 +50,7 @@ function colorkey(entry, original, output) {
         -y ${output}`.split('\t').join('')
   }
 
-  return null
+  return false
 }
 
 module.exports = colorkey;

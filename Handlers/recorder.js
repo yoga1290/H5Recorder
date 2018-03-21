@@ -7,20 +7,16 @@ function getCmd(entry, output) {
 
 	// ffmpeg -y -c:v png -f image2pipe -r 24 -t 8  -i - -c:v libx264 -pix_fmt yuv420p -movflags +faststart
 	return `phantomjs record.phantom.js \
-		${entry.page} \
-		${entry.startHash} \
-		${entry.endHash} \
-		${entry.size.w} \
-		${entry.size.h} \
-	| ffmpeg \
-			-c:v png \
-			-f image2pipe \
-			-r 24  \
-			-i - \
-			-c:v libx264 \
-			-pix_fmt yuv420p \
-			-movflags +faststart \
-			-y ${output};`.split('\t').join('')
+"${entry.page}#${entry.startHash}#${entry.endHash}#${entry.size.w}#${entry.size.h}" \
+		| ffmpeg \
+		-c:v png \
+		-f image2pipe \
+		-r 24  \
+		-i - \
+		-c:v libx264 \
+		-pix_fmt yuv420p \
+		-movflags +faststart \
+		-y ${output};`.split('\t').join('')
 }
 
 function handle(entries, cb) {
@@ -51,7 +47,7 @@ console.log('TODO')
   		if (i + 1 >= entries.length) {
   			if (cb) {
 					console.log('recorder', outputs.join(', '))
-          cb(false, outputs)
+          cb(null, outputs)
 					//TODO:
         }
   		} else {
@@ -65,7 +61,7 @@ console.log('TODO')
 
 // Making APIs that support both callbacks and promises
 // RE: https://developer.ibm.com/node/2016/08/24/promises-in-node-js-an-alternative-to-callbacks/
-exports.record = function (entries, cb) {
+module.exports = function (entries, cb) {
   if (cb) return handle(entries, cb)
 
   return new Promise( (resolve, reject) => {

@@ -1,3 +1,5 @@
+const ffmpeg = require('@ffmpeg-installer/ffmpeg').path
+
 function concat(output, ...videos) {
   var videoList = '',
       filtermap = ''
@@ -5,7 +7,7 @@ function concat(output, ...videos) {
     videoList += `-i ${video} `
     filtermap += `[${i}:v:0][${i}:a:0]`
   })
-  return `ffmpeg \
+  return `${ffmpeg} \
   ${videoList}
   -filter_complex \
   "${filtermap}\

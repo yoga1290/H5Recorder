@@ -1,10 +1,11 @@
 {
   "name": "h5recorder",
-  "version": "0.0.2",
-  "description": "Headless page video recorder, you simply provide array of paths ,relative to local directory or a URL to a server webpage, to the desired pages and their starting and ending URI hash and get a video for each entry.",
+  "version": "0.0.23",
+  "description": "Headless page video recorder, you simply provide array of paths , locally or a valid webpage URL and provide their starting and ending URI fragment and get the processed video",
   "main": "index.js",
   "bin": "cmd.js",
   "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.0.13",
     "express": "^4.16.2",
     "phantomjs-prebuilt": "^2.1.16"
   },

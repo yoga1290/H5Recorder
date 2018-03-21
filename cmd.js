@@ -1,46 +1,21 @@
 #!/usr/bin/env node
-const { exec } = require('child_process');
-const express = require('express');
-const http = require('http')
-const path = require('path');
-const { Recorder, OverlayHandler } = require('./Handlers')
-var app = express();
+const fs = require('fs');
+const h5recorder = require('./index.js');
 
-
-
-let data = []
 
 if (process.argv[2]) {
-	data = require(`./${process.argv[2]}`)
+	let infile = process.argv[2]
+	fs.readFile(infile, function read(err, config) {
+	    if (err) {
+	        throw err;
+	    }
+
+			h5recorder(config).then((result) => {
+				console.log("OK")
+			})
+	})
+
 } else {
-	console.log('Usage: npm start PATH_TO_DATA.json (try "npm start sample.json")')
+	console.log(`Usage: PATH_TO_DATA.json`)
 	process.exit(0)
 }
-
-
-app.set('port', (process.env.PORT || 8080));
-app.use(express.static( path.resolve( __dirname, 'www')) );
-
-// http://expressjs.com/en/4x/api.html#app.listen
-let server = http.createServer(app)
-server.listen(() => {
-	let serverPort = server.address().port
-
-	data = data.map((entry) => {
-		entry.page = entry.page
-								.split('http://localhost')
-								.join('http://localhost:' + serverPort)
-		return entry
-	})
-
-
-	console.log('Server started at ', server.address().port) //process.argv[2]
-
-	Recorder.record(data).then((screenRecords) => {
-		console.log('recorder/screenRecords', screenRecords)
-		OverlayHandler.handleOverlay(data, screenRecords).then((e, result) => {
-			server.close()
-			process.exit(0)
-		})
-	})
-})

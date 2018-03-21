@@ -4,18 +4,23 @@
 // phantomjs runner.js | ffmpeg -y -c:v png -f image2pipe -r 24 -t 10  -i - -c:v libx264 -pix_fmt yuv420p -movflags +faststart output.mp4
 const system = require('system')
 
-var address = system.args[1]
-// var pagePath = system.args[2]
-var startRecordHash = system.args[2]
-var endRecordHash = system.args[3]
+// address#startHash#endHash#w#h
+var params = system.args[1].split('#')
+
+console.log('hash=', params);
+var address = params[0];
+var startRecordHash = params[1];
+var endRecordHash = params[2];
+var width = parseInt(params[3]);
+var height = parseInt(params[4]);
+
+console.log('hash=', system.args, params);
 
 var page = require('webpage').create(),
     // address = 'http://localhost:' + serverPort + '/' + pagePath,
     // duration = 3, // duration of the video, in seconds
     framerate = 24, // number of frames per second. 24 is a good value.
-    counter = 0,
-    width = parseInt(system.args[4]),
-    height = parseInt(system.args[5]);
+    counter = 0;
 
 page.viewportSize = { width: width, height: height };
 
@@ -33,7 +38,7 @@ page.onUrlChanged = function(targetUrl) {
 var cnt = 0
 page.open(address, function(status) {
     if (status !== 'success') {
-        console.log('Unable to load the address!');
+        console.error('Unable to load the address!');
         phantom.exit(1);
     } else {
         window.setTimeout(function () {

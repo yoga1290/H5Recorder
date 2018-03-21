@@ -1,3 +1,4 @@
+const ffmpeg = require('@ffmpeg-installer/ffmpeg').path
 
 /*
 [{
@@ -42,7 +43,7 @@ function colorkey(entry, original, output) {
     })
     //https://ffmpeg.org/ffmpeg-filters.html#Examples-37
 //TODO: :similarity=..
-    return `ffmpeg \
+    return `${ffmpeg} \
         -i ${original} \
         ${videoStreams.join(' ')} \
         -filter_complex "${filters.join(';').split('\t').join(' ')}" \
@@ -50,7 +51,7 @@ function colorkey(entry, original, output) {
         -y ${output}`.split('\t').join('')
   }
 
-  return null
+  return false
 }
 
 module.exports = colorkey;

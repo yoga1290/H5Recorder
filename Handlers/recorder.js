@@ -1,4 +1,5 @@
 const { exec } = require('child_process');
+const ffmpeg = require('@ffmpeg-installer/ffmpeg').path
 
 
 function getCmd(entry, output) {
@@ -8,7 +9,7 @@ function getCmd(entry, output) {
 	// ffmpeg -y -c:v png -f image2pipe -r 24 -t 8  -i - -c:v libx264 -pix_fmt yuv420p -movflags +faststart
 	return `phantomjs record.phantom.js \
 "${entry.page}#${entry.startHash}#${entry.endHash}#${entry.size.w}#${entry.size.h}" \
-		| ffmpeg \
+		| ${ffmpeg} \
 		-c:v png \
 		-f image2pipe \
 		-r 24  \

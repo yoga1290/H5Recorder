@@ -1,0 +1,50 @@
+@startuml
+
+actor User
+boundary "cmd/index"
+
+control RecorderHandler
+boundary ExpressJS
+boundary PhantomJS
+boundary FFMPEG
+
+collections screenRecords
+
+control OverlayHandler
+collections overlayOutputs
+
+control MergeHandler
+collections overlayMergeOutput
+entity MergeOutput
+
+
+/'
+database Foo5
+'/
+
+
+
+
+User -> "cmd/index" :
+"cmd/index" -> RecorderHandler : To boundary
+
+group "[for every entry]"
+
+autonumber "<b>[000]"
+
+RecorderHandler -> ExpressJS : To control
+RecorderHandler -> PhantomJS : To control
+PhantomJS -> FFMPEG : To control
+FFMPEG -> RecorderHandler : To control
+
+RecorderHandler -> screenRecords : To control
+RecorderHandler -> screenRecords : To control
+screenRecords -> OverlayHandler : To entity
+
+OverlayHandler -> overlayOutputs : To database
+overlayOutputs -> MergeHandler : To collections
+MergeHandler -> overlayMergeOutput : To collections
+
+end
+
+@enduml

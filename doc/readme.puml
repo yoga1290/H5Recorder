@@ -2,10 +2,12 @@
 
 actor User
 boundary "cmd/index"
+boundary ExpressJS
 
 control RecorderHandler
-boundary ExpressJS
 boundary PhantomJS
+
+collections stdout
 boundary FFMPEG
 
 collections screenRecords
@@ -15,36 +17,92 @@ collections overlayOutputs
 
 control MergeHandler
 collections overlayMergeOutput
-entity MergeOutput
+entity Output
 
 
-/'
-database Foo5
-'/
-
-
+autonumber "<b>[00]"
 
 
 User -> "cmd/index" :
-"cmd/index" -> RecorderHandler : To boundary
 
-group "[for every entry]"
+group "[for each entry]"
 
-autonumber "<b>[000]"
+"cmd/index" -> ExpressJS : /'ExpressJS web server to serve the webpage directory'/
+activate ExpressJS
 
-RecorderHandler -> ExpressJS : To control
-RecorderHandler -> PhantomJS : To control
-PhantomJS -> FFMPEG : To control
-FFMPEG -> RecorderHandler : To control
+"cmd/index" -> RecorderHandler : /'To boundary'/
 
-RecorderHandler -> screenRecords : To control
-RecorderHandler -> screenRecords : To control
-screenRecords -> OverlayHandler : To entity
 
-OverlayHandler -> overlayOutputs : To database
-overlayOutputs -> MergeHandler : To collections
-MergeHandler -> overlayMergeOutput : To collections
+RecorderHandler -> PhantomJS : /'To control'/
+
+RecorderHandler -> FFMPEG :
+activate FFMPEG
+
+PhantomJS <-> ExpressJS : webpage/assets
+PhantomJS <-> stdout : pipe
+
+FFMPEG <-> stdout : screenshots stream
+
+
+FFMPEG <-> screenRecords : /'output a video out of the screenshots'/
+FFMPEG -> RecorderHandler : /'callback w the generated videos'/
+deactivate FFMPEG
+
+RecorderHandler -> ExpressJS :
+deactivate ExpressJS
+
+group "[for each overlay]"
+RecorderHandler -> OverlayHandler :
+
+OverlayHandler -> FFMPEG :
+activate FFMPEG
+FFMPEG -> overlayOutputs :
+FFMPEG -> OverlayHandler :
+deactivate FFMPEG
+
+OverlayHandler <- overlayOutputs :
+
+
+
+deactivate ExpressJS
+
+
+OverlayHandler -> MergeHandler :
+activate MergeHandler
+end
+
+MergeHandler -> FFMPEG :
+activate FFMPEG
+FFMPEG -> overlayMergeOutput :
+
+FFMPEG -> MergeHandler :
+deactivate FFMPEG
 
 end
+
+
+MergeHandler -> OverlayHandler : /'end MergeHandler'/
+
+deactivate MergeHandler
+
+
+
+
+OverlayHandler -> MergeHandler :
+activate MergeHandler
+
+MergeHandler -> FFMPEG :
+activate FFMPEG
+
+overlayMergeOutput -> FFMPEG :
+FFMPEG -> Output :
+FFMPEG -> MergeHandler :
+deactivate FFMPEG
+
+
+MergeHandler -> "cmd/index" :
+deactivate MergeHandler
+
+/'   '/
 
 @enduml

@@ -3,15 +3,20 @@ const express = require('express');
 const http = require('http')
 const path = require('path');
 const fs = require('fs');
+const Ajv = require('ajv');
+const schema = require('./schema.json')
 const { Recorder, OverlayHandler, MergeHandler } = require('./Handlers')
 var app = express();
 
 
 
 let data = []
+let ajv = new Ajv()
+let jsonSchemaValidator = ajv.compile(schema)
+let port = process.env.PORT || 0;
+// If port is omitted or is 0, the operating system will assign an arbitrary unused port, which can be retrieved by using server.address().port after the 'listening' event has been emitted.
+// see https://nodejs.org/api/net.html#net_server_listen_port_host_backlog_callback
 
-
-app.set('port', (process.env.PORT || 8080));
 
 // http://expressjs.com/en/4x/api.html#app.listen
 let server = http.createServer(app)
@@ -24,6 +29,9 @@ function main(jsonData, callback) {
 	//     }
 
 			data = JSON.parse(jsonData)
+			if (!jsonSchemaValidator(config)) {
+				return callback(ajv.errorsText(), null)
+			}
 			var expressStaticOptions = {
 			  dotfiles: 'ignore',
 			  etag: false,
@@ -37,7 +45,7 @@ function main(jsonData, callback) {
 			}
 
 
-			server.listen(() => {
+			server.listen(port, () => {
 				let serverPort = server.address().port
 
 				app.use((req, res, next) => {

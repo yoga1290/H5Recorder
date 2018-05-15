@@ -1,0 +1,117 @@
+{
+  "id": "http://yourdomain.com/schemas/myschema.json",
+  "type": "object",
+  "minProperties": 5,
+  "maxProperties": 5,
+  "additionalProperties": true,
+  "dependencies": {
+    "page": [],
+    "size": [],
+    "startHash": [],
+    "endHash": [],
+    "overlay": []
+  },
+  "required": [
+     "page",
+     "size",
+     "startHash",
+     "endHash"
+  ],
+  "definitions": {
+       "page": {
+          "type": "string"
+      },
+       "size": {
+               "type": "object",
+                 "properties": {
+                   "w": {
+                     "type": "integer"
+                   },
+                     "h": {
+                       "type": "integer"
+                     }
+                 },
+                   "required": [
+                     "w",
+                     "h"
+                   ]
+      },
+       "startHash": {
+               "type": "string"
+      },
+       "endHash": {
+               "type": "string"
+      },
+       "overlay": {
+          "type": "array",
+          "items": [{
+            "type": "object",
+            "properties": {
+              "video": { "$ref": "#/definitions/overlayElm/video" },
+              "colorkey": { "$ref": "#/definitions/overlayElm/colorkey" },
+              "similarity": { "$ref": "#/definitions/overlayElm/similarity" },
+              "time": { "$ref": "#/definitions/overlayElm/time" },
+              "crop": { "$ref": "#/definitions/overlayElm/crop" }
+            }
+          }]
+      },
+
+
+     "overlayElm": {
+       "video": {
+          "type": "string"
+      },
+       "colorkey": {
+               "type": "string"
+      },
+       "similarity": {
+               "type": "number",
+               "minimum": 0,
+               "maximum": 1
+      },
+       "time": {
+               "type": "object",
+               "properties": {
+               		"start": {
+                    	"type": "integer"
+                    },
+                    "end": {
+                      "type": "integer"
+                    }
+               }
+      },
+       "crop": {
+               "type": "object",
+               "properties": {
+               		"aspectRatio": {
+                    	"type": "number",
+                        "minimum": 0,
+               			"maximum": 1
+                    },
+                    "offset": {
+                      "type": "object",
+                      "properties": {
+                          "x": {
+                              "type": "number",
+                              "minimum": 0,
+               			            "maximum": 1
+                          },
+                          "y": {
+                              "type": "number",
+                              "minimum": 0,
+               			            "maximum": 1
+                          }
+                     }
+                    }
+               }
+      }
+     }
+  },
+  "properties": {
+    "page": { "$ref": "#/definitions/page" },
+    "size": { "$ref": "#/definitions/size" },
+    "startHash": { "$ref": "#/definitions/startHash" },
+    "endHash": { "$ref": "#/definitions/endHash" },
+    "overlay": { "$ref": "#/definitions/overlay" }
+  }
+}

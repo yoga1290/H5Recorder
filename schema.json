@@ -1,5 +1,5 @@
 {
-  "id": "http://yourdomain.com/schemas/myschema.json",
+  "id": "https://github.com/yoga1290/H5Recorder/blob/master/schema.json",
   "type": "object",
   "minProperties": 5,
   "maxProperties": 5,

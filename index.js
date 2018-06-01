@@ -29,8 +29,9 @@ function main(jsonData, callback) {
 	//     }
 
 			data = JSON.parse(jsonData)
-			if (!jsonSchemaValidator(config)) {
-				return callback(ajv.errorsText(), null)
+			var valid = jsonSchemaValidator(data);
+			if (!valid) {
+				return callback(jsonSchemaValidator.errors, null)
 			}
 			var expressStaticOptions = {
 			  dotfiles: 'ignore',

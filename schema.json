@@ -1,6 +1,6 @@
 {
   "id": "https://github.com/yoga1290/H5Recorder/blob/master/schema.json",
-  "type": "object",
+  "type": "array",
   "minProperties": 5,
   "maxProperties": 5,
   "additionalProperties": true,
@@ -21,6 +21,9 @@
        "page": {
           "type": "string"
       },
+      "youtube": {
+         "type": "string"
+     },
        "size": {
                "type": "object",
                  "properties": {
@@ -109,6 +112,7 @@
   },
   "properties": {
     "page": { "$ref": "#/definitions/page" },
+    "youtube": { "$ref": "#/definitions/youtube" },
     "size": { "$ref": "#/definitions/size" },
     "startHash": { "$ref": "#/definitions/startHash" },
     "endHash": { "$ref": "#/definitions/endHash" },

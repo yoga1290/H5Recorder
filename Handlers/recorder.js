@@ -1,5 +1,6 @@
 const { exec } = require('child_process');
 const ffmpeg = require('@ffmpeg-installer/ffmpeg').path
+const { deleteFiles } = require('../ffmpegUtil')
 
 
 function getCmd(entry, output) {
@@ -50,6 +51,7 @@ console.log('TODO')
 					console.log('recorder', outputs.join(', '))
           cb(null, outputs)
 					//TODO:
+					deleteFiles(outputs) //TODO await
         }
   		} else {
   			loop(i + 1)

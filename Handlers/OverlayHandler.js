@@ -1,5 +1,5 @@
 const { exec } = require('child_process');
-const { colorKey } = require('../ffmpegUtil')
+const { colorKey, deleteFiles } = require('../ffmpegUtil')
 
 function handle(entries, inputs, cb) {
 console.log('Overlay', entries, inputs)
@@ -12,7 +12,7 @@ console.log('Overlay', entries, inputs)
       if (cb) {
         console.log('outputs', outputs)
         cb(null, outputs)
-        //TODO:
+        deleteFiles(outputs) //TODO await
       }
       return;
     }

@@ -1,5 +1,5 @@
 const { exec } = require('child_process');
-const { merge } = require('../ffmpegUtil')
+const { merge, deleteFiles } = require('../ffmpegUtil')
 
 function handle(infiles, cb) {
     console.log('MergeHandler', infiles)
@@ -19,6 +19,8 @@ function handle(infiles, cb) {
     		console.log(`stdout: ${stdout}`);
     		console.error(`stderr: ${stderr}`);
     		cb(null, output)
+
+        deleteFiles([output]) //TODO await
     	});
     } else {
       cb(null, [])

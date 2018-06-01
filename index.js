@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const Ajv = require('ajv');
 const schema = require('./schema.json')
-const { Recorder, OverlayHandler, MergeHandler } = require('./Handlers')
+const { Recorder, OverlayHandler, MergeHandler, YoutubeHandler } = require('./Handlers')
 var app = express();
 
 
@@ -84,27 +84,31 @@ console.log(data)
 				let outputs = []
 				Recorder(data).then((screenRecords) => {
 					// console.log('recorder/screenRecords', screenRecords)
-					OverlayHandler(data, screenRecords).then((overlayOutputs) => {
-						// console.log('overlayOutputs', overlayOutputs)
-						server.close()
+					YoutubeHandler(data).then((_data) => {
+						data = _data
+						OverlayHandler(data, screenRecords).then((overlayOutputs) => {
+							// console.log('overlayOutputs', overlayOutputs)
+							server.close()
 
-						MergeHandler(overlayOutputs).then((overlayMergeOutput) => {
-							console.log('MergeHandler:', overlayMergeOutput)
+							MergeHandler(overlayOutputs).then((overlayMergeOutput) => {
+								console.log('MergeHandler:', overlayMergeOutput)
 
-							if (overlayMergeOutput.length > 0) {
-								outputs.push(overlayMergeOutput)
-							} else if (overlayOutputs.length > 0) {
-								outputs.push(...overlayOutputs)
-							} else if (screenRecords.length > 0) {
-								outputs.push(...screenRecords)
-							}
-							// at the end, merge all outputs:
-							MergeHandler(outputs).then((output) => {
-								console.log('outputs', output)
-								callback(null, output)
+								if (overlayMergeOutput.length > 0) {
+									outputs.push(overlayMergeOutput)
+								} else if (overlayOutputs.length > 0) {
+									outputs.push(...overlayOutputs)
+								} else if (screenRecords.length > 0) {
+									outputs.push(...screenRecords)
+								}
+								// at the end, merge all outputs:
+								MergeHandler(outputs).then((output) => {
+									console.log('outputs', output)
+									callback(null, output)
+								})
+
 							})
-
 						})
+
 					})
 				})
 

@@ -64,3 +64,10 @@ h5recorder([{
 
 # Credit
 + this was inspired by [phanan's snippet](https://gist.github.com/phanan/e03f75082e6eb114a35c#file-runner-js), modified & wrapped to be more flexible; just meets my needs :P
+
+
+# Changelog & progress
+
+### 0.0.30
+
++ [fix ajv, validation schema & local phantom module path](https://github.com/yoga1290/H5Recorder/pull/2)

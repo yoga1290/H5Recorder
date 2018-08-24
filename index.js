@@ -21,14 +21,16 @@ let port = process.env.PORT || 0;
 // http://expressjs.com/en/4x/api.html#app.listen
 let server = http.createServer(app)
 
-function main(jsonData, runInCmd = false, callback) {
+function main(data, runInCmd = false, callback) {
 
 	// fs.readFile(infile, function read(err, jsonData) {
 	//     if (err) {
 	//         throw err;
 	//     }
 
-			data = JSON.parse(jsonData)
+			if (typeof data != 'object') {
+				data = JSON.parse(data)
+			}
 			var valid = jsonSchemaValidator(data);
 			if (!valid) {
 				return callback(jsonSchemaValidator.errors, null)

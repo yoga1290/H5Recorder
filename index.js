@@ -105,6 +105,10 @@ console.log(data)
 							MergeHandler(outputs).then((output) => {
 								console.log('outputs', output)
 								callback(null, output)
+
+								let filesToDelete = [...overlayOutputs, ...screenRecords, overlayMergeOutput]
+								filesToDelete.forEach(fs.unlinkSync)
+
 							})
 
 						})

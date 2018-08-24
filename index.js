@@ -21,7 +21,7 @@ let port = process.env.PORT || 0;
 // http://expressjs.com/en/4x/api.html#app.listen
 let server = http.createServer(app)
 
-function main(jsonData, callback) {
+function main(jsonData, runInCmd = false, callback) {
 
 	// fs.readFile(infile, function read(err, jsonData) {
 	//     if (err) {
@@ -83,7 +83,7 @@ console.log(data)
 				console.log('Server started at ', server.address().port) //process.argv[2]
 			//
 				let outputs = []
-				Recorder(data).then((screenRecords) => {
+				Recorder(data, runInCmd).then((screenRecords) => {
 					// console.log('recorder/screenRecords', screenRecords)
 					OverlayHandler(data, screenRecords).then((overlayOutputs) => {
 						// console.log('overlayOutputs', overlayOutputs)
@@ -117,11 +117,11 @@ console.log(data)
 
 
 
-module.exports = function (infile, cb) {
-  if (cb) return main(infile, cb)
+module.exports = function (infile, runInCmd = false, cb) {
+  if (cb) return main(infile, runInCmd, cb)
 
   return new Promise(function (resolve, reject) {
-    main(infile, function (err, data) {
+    main(infile, runInCmd, function (err, data) {
       if (err) return reject(err)
       resolve(data)
     })

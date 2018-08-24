@@ -8,7 +8,10 @@ function getCmd(entry, output) {
   //       --extra-cflags=-fPIC \
 
 	// ffmpeg -y -c:v png -f image2pipe -r 24 -t 8  -i - -c:v libx264 -pix_fmt yuv420p -movflags +faststart
-	return `${path.join(__dirname, '../', 'node_modules', 'phantomjs-prebuilt', 'bin', 'phantomjs')} record.phantom.js \
+	let phantomPath = path.join(__dirname, '../', '../', '../', 'node_modules', 'phantomjs-prebuilt', 'bin', 'phantomjs');
+	let phantomScriptPath = path.join(__dirname, '../', 'record.phantom.js');
+
+	return `${phantomPath} ${phantomScriptPath} \
 "${entry.page}#${entry.startHash}#${entry.endHash}#${entry.size.w}#${entry.size.h}" \
 		| ${ffmpeg} \
 		-c:v png \
@@ -70,7 +73,7 @@ module.exports = function (entries, cb) {
 
     handle(entries, function (err, data) {
       if (err) return reject(err)
-			console.log('recorder promise', err, data, resolve)
+			console.log('recorder promise', err, data)
       resolve(data)
     })
 

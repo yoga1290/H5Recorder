@@ -25,11 +25,16 @@ var page = require('webpage').create(),
 page.viewportSize = { width: width, height: height };
 
 var record = false;
+var timeup = false;
+window.setTimeout(function () {
+  timeup = true;
+}, 10000);
+
 // http://phantomjs.org/api/webpage/handler/on-url-changed.html
 page.onUrlChanged = function(targetUrl) {
   if (targetUrl.match('#' + startRecordHash) !== null) {
     record = true;
-  } else if (record && targetUrl.match('#' + endRecordHash) !== null) {
+  } else if (record && targetUrl.match('#' + endRecordHash) !== null || timeup) {
     record = false;
     phantom.exit(0);
   }

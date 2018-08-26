@@ -7,14 +7,11 @@ const system = require('system')
 // address#startHash#endHash#w#h
 var params = system.args[1].split('#')
 
-console.log('hash=', params);
 var address = params[0];
 var startRecordHash = params[1];
 var endRecordHash = params[2];
 var width = parseInt(params[3]);
 var height = parseInt(params[4]);
-
-console.log('hash=', system.args, params);
 
 var page = require('webpage').create(),
     // address = 'http://localhost:' + serverPort + '/' + pagePath,

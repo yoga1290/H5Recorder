@@ -9,7 +9,6 @@ if (process.argv[2]) {
 	    if (err) {
 	        throw err;
 	    }
-console.log('config', infile, config)
 			h5recorder(config, true).then((result) => {
 				console.log("OK", result)
 			}, (err) => {

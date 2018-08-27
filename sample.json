@@ -1,84 +1,9 @@
 [{
-	"page": "http://localhost/new30.html",
+	"page": "http://yoga1290.gitlab.io/h5r-pages/blank",
 	"startHash": "start",
-	"endHash": "0",
+	"endHash": "end",
 	"size": {
 		"w": 400,
 		"h": 710
-	},
-	"overlay": [{
-	  "video": "mad/intro2.mp4",
-	  "colorkey": "black",
-	  "similarity": 0.05,
-	  "crop": {
-	    "aspectRatio": 0.5625,
-	    "offset": {
-	      "x": 0.35,
-	      "y": 0
-	    }
-	  }
-	}, {
-	  "video": "mad/iv1.mp4",
-	  "colorkey": "red",
-	  "similarity": 0.2,
-	  "time": {
-	    "start": 65,
-	    "end": 70
-	  },
-	  "crop": {
-	    "aspectRatio": 0.5625,
-	    "offset": {
-	      "x": 0.35,
-	      "y": 0
-	    }
-	  }
-	}, {
-	  "video": "mad/jpDSQ-VjSN0.mp4",
-	  "colorkey": "green",
-	  "similarity": 0.2,
-	  "time": {
-	    "start": 18.2,
-	    "end": 25
-	  },
-	  "crop": {
-	    "aspectRatio": 0.5625,
-	    "offset": {
-	      "x": 0.29,
-	      "y": 0
-
-	    }
-	  }
-	}, {
-	  "time": {
-	    "start": 125,
-	    "end": 125
-	  },
-	  "video": "mad/mMKbRq-XFXA.mp4",
-	  "colorkey": "blue",
-	  "similarity": 0.3,
-
-	  "crop": {
-	    "aspectRatio": 0.5625,
-	    "offset": {
-	      "x": 0.43,
-	      "y": 0
-	    }
-	  }
-	}, {
-	   "video": "mad/iv4.mp4",
-	   "colorkey": "orange",
-	   "similarity": 0.3,
-	   "time": {
-	     "start": 23,
-	     "end": 29
-	   },
-	   "crop": {
-	     "aspectRatio": 0.5625,
-	     "offset": {
-	       "x": 0.25,
-	       "y": 0
-
-	     }
-	   }
-	 }]
+	}
 }]

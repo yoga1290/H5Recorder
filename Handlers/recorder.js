@@ -1,6 +1,7 @@
 const { exec } = require('child_process');
 const path = require('path');
 const ffmpeg = require('@ffmpeg-installer/ffmpeg').path
+const phantomjsPath = require('phantomjs-bin').path;
 
 
 function getCmd(entry, runInCmd = false, output) {
@@ -8,12 +9,13 @@ function getCmd(entry, runInCmd = false, output) {
   //       --extra-cflags=-fPIC \
 
 	// ffmpeg -y -c:v png -f image2pipe -r 24 -t 8  -i - -c:v libx264 -pix_fmt yuv420p -movflags +faststart
-	let phantomModulePath = path.join(__dirname, '../', '../', '../', 'node_modules', 'phantomjs-prebuilt', 'bin', 'phantomjs');
-	let phantomPathInCmd = path.join(__dirname, '../', 'node_modules', 'phantomjs-prebuilt', 'bin', 'phantomjs');
+	// let phantomModulePath = path.join(__dirname, '../', '../', '../', 'node_modules', 'phantomjs-prebuilt', 'bin', 'phantomjs');
+	// let phantomPathInCmd = path.join(__dirname, '../', 'node_modules', 'phantomjs-prebuilt', 'bin', 'phantomjs');
 
+	// let panthomPath = runInCmd ? phantomPathInCmd:phantomModulePath;
 	let phantomScriptPath = path.join(__dirname, '../', 'record.phantom.js');
 
-	return `${runInCmd ? phantomPathInCmd:phantomModulePath} ${phantomScriptPath} \
+	return `${phantomjsPath} ${phantomScriptPath} \
 "${entry.page}#${entry.startHash}#${entry.endHash}#${entry.size.w}#${entry.size.h}" \
 		| ${ffmpeg} \
 		-c:v png \

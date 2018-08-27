@@ -53,11 +53,12 @@ function process(data, runInCmd, callback) {
 
 function main(data, runInCmd = false, callback) {
 
-			if (typeof data != 'object') {
+			if ((typeof data) !== 'array') {
 				data = JSON.parse(data)
 			}
 			var valid = jsonSchemaValidator(data);
 			if (!valid) {
+				jsonSchemaValidator.errors.push(data)
 				return callback(jsonSchemaValidator.errors, null)
 			}
 

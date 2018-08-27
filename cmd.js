@@ -9,7 +9,8 @@ if (process.argv[2]) {
 	    if (err) {
 	        throw err;
 	    }
-			h5recorder(config, true).then((result) => {
+			let data = JSON.parse(config)
+			h5recorder(data, true).then((result) => {
 				console.log("OK", result)
 			}, (err) => {
 				console.log("error", err)

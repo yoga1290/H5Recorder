@@ -49,9 +49,6 @@ page.open(address, function(status) {
             window.setInterval(function () {
                 if (record) {
                   page.render('/dev/stdout', { format: 'png' });
-                  // page.render('/process/stdout/write', { format: 'png' });
-                  // phantom.exit(0)
-                  // page.render('screenshot' + cnt++, { format: 'png' });
                 }
             }, 1/framerate);
         }, 200);

@@ -1,7 +1,7 @@
 [{
 	"page": "http://yoga1290.gitlab.io/h5r-pages/blank",
 	"startHash": "start",
-	"endHash": "end",
+	"endHash": "stop",
 	"size": {
 		"w": 400,
 		"h": 710

@@ -38,7 +38,11 @@ console.log('TODO')
 		let output = `v${new Date().getTime() + '-' + i}.mp4`
   	let cmd = getCmd(entries[i], runInCmd, output)
   	console.log('recorder', 'executing', cmd)
-  	exec(cmd, (err, stdout, stderr) => {
+
+		let to = -1;
+  	let task = exec(cmd, (err, stdout, stderr) => {
+
+			clearTimeout(to)
 			outputs.push(output)
 
 			console.log(`stdout: ${stdout}`);
@@ -63,6 +67,13 @@ console.log('TODO')
   			loop(i + 1)
   		}
   	});
+
+		to = setTimeout(() => {
+			console.log('PROCESS KILLED', outputs);
+			task.kill()
+			cb(null, outputs)
+		}, 60000) //TODO config?
+
   }
   loop(0)
 //*/

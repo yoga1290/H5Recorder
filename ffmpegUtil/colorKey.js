@@ -5,6 +5,14 @@ const ffmpeg = require('@ffmpeg-installer/ffmpeg').path
   scale, colorkey, similarity, video
 }]
 */
+
+/**
+ * Returns FFMPEG command-line string
+ * @param {Object} entry - H5Configuration data
+ * @param {string} original - input file path
+ * @param {string} output - output file path
+ * @param {Array} videos - ...in flated list of videos
+ */
 function colorkey(entry, original, output) {
 
   if (entry.overlay) {

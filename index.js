@@ -1,3 +1,8 @@
+/**
+* The main module
+* @module H5Recorder
+*/
+
 const { exec } = require('child_process');
 const express = require('express');
 const http = require('http')
@@ -5,7 +10,16 @@ const path = require('path');
 const fs = require('fs');
 const Ajv = require('ajv');
 const schema = require('./schema.json')
-const { Recorder, OverlayHandler, MergeHandler, LocalPageServer } = require('./Handlers')
+const {
+		Recorder,
+ 		OverlayHandler,
+  	MergeHandler,
+		AMergeHandler,
+	 	LocalPageServer } = require('./Handlers')
+const {
+	isServerNeeded,
+	getAdjustedModelURL } = LocalPageServer
+
 var app = express();
 
 
@@ -17,15 +31,23 @@ let port = process.env ? (process.env.PORT||0) : 0;
 // If port is omitted or is 0, the operating system will assign an arbitrary unused port, which can be retrieved by using server.address().port after the 'listening' event has been emitted.
 // see https://nodejs.org/api/net.html#net_server_listen_port_host_backlog_callback
 
+// https://github.com/wekan/wekan/wiki/REST-API-Swimlanes
 
+/**
+ * Executes the process: data ->(Recorder-> OverlayHandler-> MergeHandler-> MergeHandler)-> callback
+ * @param {Object} data - data
+ * @param {boolean} runInCmd - runInCmd
+ * @param {boolean} callback - callback
+ // * @exports process -
+ */
 function process(data, runInCmd, callback) {
 	let outputs = []
 	Recorder(data, runInCmd).then((screenRecords) => {
 		// console.log('recorder/screenRecords', screenRecords)
 		OverlayHandler(data, screenRecords).then((overlayOutputs) => {
-			// console.log('overlayOutputs', overlayOutputs)
 
 			MergeHandler(overlayOutputs).then((overlayMergeOutput) => {
+
 				console.log('MergeHandler:', overlayMergeOutput)
 
 				if (overlayMergeOutput.length > 0) {
@@ -36,21 +58,37 @@ function process(data, runInCmd, callback) {
 					outputs.push(...screenRecords)
 				}
 				console.log('OUTPUTS::', outputs)
-				// at the end, merge all outputs:
-				MergeHandler(outputs).then((output) => {
-					console.log('final output', output)
-					callback(null, output)
+				// WIP
+				// AMergeHandler(data, outputs, (err, overlayAudioVideos) => {
+				// 	if (err) {
+				// 		callback(err)
+				// 	} else {
+						// at the end, merge all outputs:
+						MergeHandler(outputs).then((output) => {
+							console.log('final output', output)
+							callback(null, output)
+							screenRecords.forEach(fs.unlinkSync)
+							// overlayOutputs.forEach(fs.unlinkSync)
+							// overlayAudioVideos.forEach(fs.unlinkSync)
+							// fs.unlinkSync(overlayMergeOutput)
+						})
 
-					let filesToDelete = [...overlayOutputs, ...screenRecords, overlayMergeOutput]
-					filesToDelete.forEach(fs.unlinkSync)
-
-				})
+					// }
+				// })
 
 			})
+
 		})
 	}, callback)
 }
 
+/**
+ * Loop over data entries, starts local server if needed then trigger the process function
+ * @param {Object} data - data
+ * @param {boolean} runInCmd - runInCmd
+ * @param {boolean} callback - callback
+ // * @exports process -
+ */
 function main(data, runInCmd = false, callback) {
 
 			var valid = jsonSchemaValidator(data);
@@ -59,12 +97,12 @@ function main(data, runInCmd = false, callback) {
 				return callback(jsonSchemaValidator.errors, null)
 			}
 
-			if (LocalPageServer.isServerNeeded) {
+			if (isServerNeeded) {
 				// http://expressjs.com/en/4x/api.html#app.listen
 				let server = http.createServer(app)
 				server.listen(port, () => {
 					let serverPort = server.address().port
-					data = LocalPageServer.getAdjustedModelURL(data, app, serverPort)
+					data = getAdjustedModelURL(data, app, serverPort)
 					// server.close()
 					console.log('LocalPageServer: ', server.address().port) //process.argv[2]
 					process(data, runInCmd, (err, result) => {
@@ -77,8 +115,6 @@ function main(data, runInCmd = false, callback) {
 			}
 
 }
-
-
 
 module.exports = function (infile, runInCmd = false, cb) {
   if (cb) return main(infile, runInCmd, cb)

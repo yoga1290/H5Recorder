@@ -1,5 +1,10 @@
 const ffmpeg = require('@ffmpeg-installer/ffmpeg').path
 
+/**
+ * Returns FFMPEG command-line string
+ * @param {string} output - output file path
+ * @param {Array} videos - ...in flated list of videos
+ */
 function concat(output, ...videos) {
   var videoList = '',
       filtermap = ''

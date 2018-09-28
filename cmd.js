@@ -14,6 +14,7 @@ if (process.argv[2]) {
 				console.log("OK", result)
 			}, (err) => {
 				console.log("error", err)
+				process.exit(0)
 			})
 	})
 

@@ -60,17 +60,17 @@ function process(data, runInCmd, callback) {
 				console.log('OUTPUTS::', outputs)
 				// WIP
 				// AMergeHandler(data, outputs, (err, overlayAudioVideos) => {
-				// 	if (err) {
-				// 		callback(err)
-				// 	} else {
+					// if (err) {
+					// 	callback(err)
+					// } else {
 						// at the end, merge all outputs:
 						MergeHandler(outputs).then((output) => {
 							console.log('final output', output)
 							callback(null, output)
 							screenRecords.forEach(fs.unlinkSync)
-							// overlayOutputs.forEach(fs.unlinkSync)
+							overlayOutputs.forEach(fs.unlinkSync)
 							// overlayAudioVideos.forEach(fs.unlinkSync)
-							// fs.unlinkSync(overlayMergeOutput)
+							fs.unlinkSync(overlayMergeOutput)
 						})
 
 					// }

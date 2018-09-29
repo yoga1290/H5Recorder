@@ -8,18 +8,7 @@ const ffmpeg = require('@ffmpeg-installer/ffmpeg').path
  */
 function amerge(audio, in_video = null, output) {
 
-  if (audio.length === 1) {
-
-    return `${ffmpeg} -y ${
-      audio.map((entry, i) => {
-          return `${entry.start? ` -ss ${entry.start} `:''} \
-                  ${entry.end? ` -t ${entry.end - entry.start} `:''} \
-                  -i ${entry.path} \
-                  -vcodec libx264 \
-                  ${entry.volume? ` -filter:a "volume=${entry.volume}"`:''} `;}).join('')
-      } -i ${output}`
-
-  } else if (audio.length > 0) {
+  if (audio.length > 0) {
     return `${ffmpeg} \
       ${
         audio.map((entry, i) => {

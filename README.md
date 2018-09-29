@@ -6,14 +6,13 @@ Headless page video recorder, you simply provide array of paths ,relative to the
 
 # Install
 
-+ Unix-like OS or bash-supported console as I'm using stdout direct (tested on macOS; windows/linux support may come later)
 + NodeJS & NPM installed
-+ run `npm i h5recorder` in project directory from terminal, or the globally `npm i -g h5recorder` anywhere
++ `npm i -g h5recorder` for commandline tool, or `npm i [-P|-D] h5recorder` inside a node project
 
 # Run
 
-+ First, you'll need to provide a JSON file in the following format: `[{page, startHash, endHash, size{w, h}}]`; check [sample.json](https://github.com/yoga1290/H5Recorder/blob/master/sample.json)
-  + other options:
++ First, you'll need to provide a JSON configuration in the following format: `[{page, startHash, endHash, size{w, h}}]` [[JSON Schema](schema.json)]
+  + other supported configuration:
 
 ```javascript
 [{
@@ -40,13 +39,24 @@ Headless page video recorder, you simply provide array of paths ,relative to the
 				"y": 0 // [0-1]
 			}
 		}
+	}],
+	"audio": [{ //optional; array
+		"path": "PathToAudio/VideoFile",
+		"start": 0, // time in sec
+		"end": 10, // time in sec
+		"volume": 0.5 // [0 - 1.0]
+	}, { //optional; array
+		"path": "PathToAudio/VideoFile2",
+		"start": 10, // time in sec
+		"end": 15, // time in sec
+		"volume": 0.5 // [0 - 1.0]
 	}]
 }]
 ```
 
-+ you can execute it from commandline, if installed with a `-g` flag, as `h5recorder $CONFIG_FILE`, where `$CONFIG` is the provided input file.
++ you can pass the configuration as a `$CONFIG_FILE` file to the commandline tool, after installing the package with the global `-g` flag; `h5recorder $CONFIG_FILE`
 
-+ you can execute it inside a node code as well:
++ or, you can execute it inside another node module:
 
 ```javascript
 const h5recorder = require('h5recorder')
@@ -62,11 +72,21 @@ h5recorder([{
 
 + that's all, you'll get a single file after merging all entries.
 
-# Credit
+# Flow:
+[![flow](doc/readme.png)](readme/readme.puml)
+
+# Inspiration
 + this was inspired by [phanan's snippet](https://gist.github.com/phanan/e03f75082e6eb114a35c#file-runner-js), modified & wrapped to be more flexible; just meets my needs :P
 
+# :bell: Changelog
 
-# Changelog & progress
+### 0.0.30 - 0.0.43
+
++ AMerge, adjust volume, merge multiple audio streams and merge it with the final output file
++ JSON Schema validation fixed
++ 10 sec time limit for page recording step if no `endHash` redirect.
++ Local express server will run only for relative local page.
++ JSDoc & gitlab-ci
 
 ### 0.0.30
 

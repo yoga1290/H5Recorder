@@ -52,29 +52,29 @@ function process(data, runInCmd, callback) {
 
 				if (overlayMergeOutput.length > 0) {
 					outputs.push(overlayMergeOutput)
+					screenRecords.forEach(fs.unlinkSync)
+					overlayOutputs.forEach(fs.unlinkSync)
+
+					// if MergeHandler has no outputs
 				} else if (overlayOutputs.length > 0) {
 					outputs.push(...overlayOutputs)
+					screenRecords.forEach(fs.unlinkSync)
+					// if OverlayHandler has no outputs
 				} else if (screenRecords.length > 0) {
 					outputs.push(...screenRecords)
 				}
 				console.log('OUTPUTS::', outputs)
-				// WIP
-				// AMergeHandler(data, outputs, (err, overlayAudioVideos) => {
-					// if (err) {
-					// 	callback(err)
-					// } else {
-						// at the end, merge all outputs:
-						MergeHandler(outputs).then((output) => {
+
+				AMergeHandler(data, outputs, (err, output) => {
+					if (err) {
+						callback(err)
+						outputs.forEach(fs.unlinkSync)
+					} else {
 							console.log('final output', output)
 							callback(null, output)
-							screenRecords.forEach(fs.unlinkSync)
-							overlayOutputs.forEach(fs.unlinkSync)
-							// overlayAudioVideos.forEach(fs.unlinkSync)
-							fs.unlinkSync(overlayMergeOutput)
-						})
-
-					// }
-				// })
+							outputs.forEach(fs.unlinkSync)
+					}
+				})
 
 			})
 

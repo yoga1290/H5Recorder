@@ -1,0 +1,10 @@
+pages:
+  image: node:8.11.4
+  script:
+    - npm i
+    - npm run jsdoc
+  artifacts:
+    paths:
+    - doc
+  only:
+  - master

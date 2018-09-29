@@ -16,7 +16,7 @@ console.log('AMergeHandler', entries, inVideos)
       }
       return;
     }
-
+    // every entry outputs a video but not all have audio object
     if (entries[i].audio && entries[i].audio.length > 0) {
       let output = `${new Date().getTime()}_amerge.mp4`
       let cmd = amerge(entries[i].audio, inVideos[i], output)
@@ -36,6 +36,8 @@ console.log('AMergeHandler', entries, inVideos)
         loop(i + 1)
     	});
     } else if (i < entries.length) {
+      // every entry outputs a video but not all have audio object
+      outputs.push(inVideos[i])
       loop(i + 1)
     }
 

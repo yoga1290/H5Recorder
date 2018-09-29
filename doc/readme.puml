@@ -1,108 +1,29 @@
 @startuml
 
-actor User
-boundary "cmd/index"
-boundary ExpressJS
+| cmd/index |
 
-control RecorderHandler
-boundary PhantomJS
+start
 
-collections stdout
-boundary FFMPEG
+: Read configuration file ;
 
-collections screenRecords
+repeat
 
-control OverlayHandler
-collections overlayOutputs
+  if (local page) then
+    : Start local express server & host directory resources;
+    : Map page path to localhost ;
+  endif
+  | RecorderHandler |
+  : Stream screen screenshots from PhantomJS to FFMPEG ;
+  | OverlayHandler |
+  : Map Videos to screen-records based on color/chromakeys ;
+  | MergeHandler |
+  : Merge videos into single output video ;
+  | AMergeHandler |
+  : Crop & AMerge audio streams into the output video ;
 
-control MergeHandler
-collections overlayMergeOutput
-entity Output
+  | cmd/index |
+  : Stop Express server (if exists) ;
 
-
-autonumber "<b>[00]"
-
-
-User -> "cmd/index" :
-
-group "[for each entry]"
-
-"cmd/index" -> ExpressJS : /'ExpressJS web server to serve the webpage directory'/
-activate ExpressJS
-
-"cmd/index" -> RecorderHandler : /'To boundary'/
-
-
-RecorderHandler -> PhantomJS : /'To control'/
-
-RecorderHandler -> FFMPEG :
-activate FFMPEG
-
-PhantomJS <-> ExpressJS : webpage/assets
-PhantomJS <-> stdout : pipe
-
-FFMPEG <-> stdout : screenshots stream
-
-
-FFMPEG <-> screenRecords : /'output a video out of the screenshots'/
-FFMPEG -> RecorderHandler : /'callback w the generated videos'/
-deactivate FFMPEG
-
-RecorderHandler -> ExpressJS :
-deactivate ExpressJS
-
-group "[for each overlay]"
-RecorderHandler -> OverlayHandler :
-
-OverlayHandler -> FFMPEG :
-activate FFMPEG
-FFMPEG -> overlayOutputs :
-FFMPEG -> OverlayHandler :
-deactivate FFMPEG
-
-OverlayHandler <- overlayOutputs :
-
-
-
-deactivate ExpressJS
-
-
-OverlayHandler -> MergeHandler :
-activate MergeHandler
-end
-
-MergeHandler -> FFMPEG :
-activate FFMPEG
-FFMPEG -> overlayMergeOutput :
-
-FFMPEG -> MergeHandler :
-deactivate FFMPEG
-
-end
-
-
-MergeHandler -> OverlayHandler : /'end MergeHandler'/
-
-deactivate MergeHandler
-
-
-
-
-OverlayHandler -> MergeHandler :
-activate MergeHandler
-
-MergeHandler -> FFMPEG :
-activate FFMPEG
-
-overlayMergeOutput -> FFMPEG :
-FFMPEG -> Output :
-FFMPEG -> MergeHandler :
-deactivate FFMPEG
-
-
-MergeHandler -> "cmd/index" :
-deactivate MergeHandler
-
-/'   '/
+repeat while ( more entries?)
 
 @enduml

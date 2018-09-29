@@ -21,10 +21,35 @@
        "page": {
           "type": "string"
       },
-      "youtube": {
-         "type": "string"
+      "audio": {
+         "type": "array",
+         "items": [{
+           "type": "object",
+           "properties": {
+             "path": { "$ref": "#/definitions/audioElm/path" },
+             "start": { "$ref": "#/definitions/audioElm/start" },
+             "end": { "$ref": "#/definitions/audioElm/end" },
+             "volume": { "$ref": "#/definitions/audioElm/volume" }
+           }
+         }]
      },
-       "size": {
+     "audioElm": {
+        "path": {
+          "type": "string"
+        },
+        "start": {
+          "type": "integer"
+        },
+        "end": {
+           "type": "integer"
+        },
+        "volume": {
+           "type": "number",
+           "minimum": 0,
+           "maximum": 1
+        }
+    },
+    "size": {
                "type": "object",
                  "properties": {
                    "w": {
@@ -38,14 +63,17 @@
                      "w",
                      "h"
                    ]
-      },
-       "startHash": {
-               "type": "string"
-      },
-       "endHash": {
-               "type": "string"
-      },
-       "overlay": {
+    },
+     "startHash": {
+             "type": "string"
+    },
+     "endHash": {
+             "type": "string"
+    },
+
+
+
+    "overlay": {
           "type": "array",
           "items": [{
             "type": "object",
@@ -57,10 +85,8 @@
               "crop": { "$ref": "#/definitions/overlayElm/crop" }
             }
           }]
-      },
-
-
-     "overlayElm": {
+    },
+    "overlayElm": {
        "video": {
           "type": "string"
       },
@@ -107,12 +133,12 @@
                      }
                     }
                }
-      }
+       }
      }
   },
   "properties": {
     "page": { "$ref": "#/definitions/page" },
-    "youtube": { "$ref": "#/definitions/youtube" },
+    "audio": { "$ref": "#/definitions/audio" },
     "size": { "$ref": "#/definitions/size" },
     "startHash": { "$ref": "#/definitions/startHash" },
     "endHash": { "$ref": "#/definitions/endHash" },

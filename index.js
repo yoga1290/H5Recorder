@@ -45,38 +45,30 @@ function process(data, runInCmd, callback) {
 	Recorder(data, runInCmd).then((screenRecords) => {
 		// console.log('recorder/screenRecords', screenRecords)
 		OverlayHandler(data, screenRecords).then((overlayOutputs) => {
+			screenRecords.forEach(fs.unlinkSync)
 
-			MergeHandler(overlayOutputs).then((overlayMergeOutput) => {
+			AMergeHandler(data, overlayOutputs, (err, aMergeOutputs) => {
+				overlayOutputs.forEach(fs.unlinkSync)
 
-				console.log('MergeHandler:', overlayMergeOutput)
+				console.log('AMergeHandler Outputs:', aMergeOutputs)
 
-				if (overlayMergeOutput.length > 0) {
-					outputs.push(overlayMergeOutput)
-					screenRecords.forEach(fs.unlinkSync)
-					overlayOutputs.forEach(fs.unlinkSync)
+				MergeHandler(aMergeOutputs).then((overlayMergeOutput) => {
+					aMergeOutputs.forEach(fs.unlinkSync)
 
-					// if MergeHandler has no outputs
-				} else if (overlayOutputs.length > 0) {
-					outputs.push(...overlayOutputs)
-					screenRecords.forEach(fs.unlinkSync)
-					// if OverlayHandler has no outputs
-				} else if (screenRecords.length > 0) {
-					outputs.push(...screenRecords)
-				}
-				console.log('OUTPUTS::', outputs)
+					console.log('MergeHandler Outputs:', overlayMergeOutput)
 
-				AMergeHandler(data, outputs, (err, output) => {
 					if (err) {
 						callback(err)
-						outputs.forEach(fs.unlinkSync)
+						fs.unlinkSync(overlayMergeOutput)
 					} else {
-							console.log('final output', output)
-							callback(null, output)
-							outputs.forEach(fs.unlinkSync)
+							console.log('final output', overlayMergeOutput)
+							callback(null, overlayMergeOutput)
 					}
 				})
 
-			})
+
+
+			}, console.log)
 
 		})
 	}, callback)

@@ -41,6 +41,7 @@ console.log('Overlay', 'cmd', cmd)
     	});
 
     } else if (i < entries.length) {
+      outputs.push(inputs[i])
       loop(i + 1)
     }
 

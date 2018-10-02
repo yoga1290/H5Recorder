@@ -1,6 +1,6 @@
 {
   "name": "h5recorder",
-  "version": "0.0.45",
+  "version": "0.0.46",
   "description": "Headless page video recorder w chromakey-based video overlays, you simply provide array of paths , locally or a valid webpage URL and provide their starting and ending URI fragment and get the processed video",
   "main": "index.js",
   "bin": "cmd.js",

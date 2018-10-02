@@ -42,19 +42,20 @@ let port = process.env ? (process.env.PORT||0) : 0;
  */
 function process(data, runInCmd, callback) {
 	let outputs = []
+	let toClean = {}
 	Recorder(data, runInCmd).then((screenRecords) => {
 		// console.log('recorder/screenRecords', screenRecords)
 		OverlayHandler(data, screenRecords).then((overlayOutputs) => {
-			screenRecords.forEach(fs.unlinkSync)
+			screenRecords.forEach((v) => { toClean[v] = true;})
 
 			AMergeHandler(data, overlayOutputs, (err, aMergeOutputs) => {
-				overlayOutputs.forEach(fs.unlinkSync)
+				overlayOutputs.forEach((v) => { toClean[v] = true;})
 
 				console.log('AMergeHandler Outputs:', aMergeOutputs)
 
 				MergeHandler(aMergeOutputs).then((overlayMergeOutput) => {
-					aMergeOutputs.forEach(fs.unlinkSync)
-
+					aMergeOutputs.forEach((v) => { toClean[v] = true;})
+					Object.keys(toClean).forEach(fs.unlinkSync)
 					console.log('MergeHandler Outputs:', overlayMergeOutput)
 
 					if (err) {

@@ -8,6 +8,8 @@ const ffmpeg = require('@ffmpeg-installer/ffmpeg').path
  */
 function amerge(audio, in_video = null, output) {
 
+  //TODO: fix the silent audio issue
+
   if (audio.length > 0) {
     return `${ffmpeg} \
       ${

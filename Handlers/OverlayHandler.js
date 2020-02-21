@@ -1,5 +1,7 @@
 const { exec } = require('child_process');
 const { colorKey } = require('../ffmpegUtil')
+const path = require('path');
+const { H5R_OUTPUT_DIR } = process.env;
 
 function handle(entries, inputs, cb) {
 console.log('Overlay', entries, inputs)
@@ -17,7 +19,7 @@ console.log('Overlay', entries, inputs)
       return;
     }
 
-    let output = `${new Date().getTime()}_sub${i}.mp4`
+    let output = path.resolve(H5R_OUTPUT_DIR, `${new Date().getTime()}_sub${i}.mp4`);
   	let cmd = colorKey(entries[i], inputs[i], output)
 console.log('Overlay', 'cmd', cmd)
     if (cmd) {

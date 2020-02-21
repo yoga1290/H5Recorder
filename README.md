@@ -4,6 +4,26 @@ Headless page video recorder, you simply provide array of paths ,relative to the
 ![demo](https://raw.githubusercontent.com/yoga1290/H5Recorder/master/readme.gif)
 >watch sample output in portrait on mobile's fullscreen mode on [youtube](https://youtu.be/w_RTerk7wtY)
 
+# Run via Docker/Compose
+
+[![docker](doc/docker.png)](doc/docker.puml)
+
+```bash
+docker run \
+    # Inject the JSON Config file (sample.json) into the container
+	-v $(pwd)/sample.json:/usr/app/sample.json \
+    # Map the output directory into a local volume
+	-v $(pwd)/output:/usr/app/output \
+    # Internet access might be required to load some webpages (HTTP/HTTPS urls)
+	--network host \
+    # my docker image, obviously
+	yoga1290/h5recorder:0.0.47 \
+    # a config file path to use, relative to the container's working directory (/usr/app/):
+	sample.json
+```
+
++ **Docker Compose**: See [docker-compose.yml](docker-compose.yml) sample.
+
 # Install
 
 + NodeJS & NPM installed
@@ -73,12 +93,16 @@ h5recorder([{
 + that's all, you'll get a single file after merging all entries.
 
 # Flow:
-[![flow](doc/readme.png)](readme/readme.puml)
+[![flow](doc/readme.png)](doc/readme.puml)
 
 # Inspiration
 + this was inspired by [phanan's snippet](https://gist.github.com/phanan/e03f75082e6eb114a35c#file-runner-js), modified & wrapped to be more flexible; just meets my needs :P
 
 # :bell: Changelog
+
+### 0.0.47
+
++ [Docker Image (& Docker Compose)](https://github.com/yoga1290/H5Recorder/issues/4)
 
 ### 0.0.30 - 0.0.43
 

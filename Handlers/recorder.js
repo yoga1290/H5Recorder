@@ -2,7 +2,8 @@ const { exec } = require('child_process');
 const path = require('path');
 const ffmpeg = require('@ffmpeg-installer/ffmpeg').path
 const phantomjsPath = require('phantomjs-bin').path;
-
+const { H5R_OUTPUT_DIR } = process.env;
+const outputdir = path.resolve(__dirname, H5R_OUTPUT_DIR);
 
 function getCmd(entry, runInCmd = false, output) {
   //-framerate 1 -i - -c:v libx264 -vf format=yuv420p //
@@ -35,7 +36,7 @@ console.log('TODO')
 	let outputs = []
   let loop = (i) => {
 
-		let output = `v${new Date().getTime() + '-' + i}.mp4`
+		let output = path.resolve(outputdir, `v${new Date().getTime() + '-' + i}.mp4`);
   	let cmd = getCmd(entries[i], runInCmd, output)
   	console.log('recorder', 'executing', cmd)
 

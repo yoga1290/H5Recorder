@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+
+    h5recorder:
+      image: h5recorder
+      build: 
+        context: .
+      volumes:
+        - ./sample.json:/usr/app/sample.json
+        - ./output:/usr/app/output
+      network_mode: host
+      command: [ "./sample.json"]

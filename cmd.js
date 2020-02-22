@@ -7,14 +7,15 @@ if (process.argv[2]) {
 	let infile = process.argv[2]
 	fs.readFile(infile, function read(err, config) {
 	    if (err) {
+			console.error(err);
 	        throw err;
 	    }
 			let data = JSON.parse(config)
 			h5recorder(data, true).then((result) => {
 				console.log("OK", result)
 			}, (err) => {
-				console.log("error", err)
-				process.exit(0)
+				console.log("error", err);
+				process.exit(0);
 			})
 	})
 

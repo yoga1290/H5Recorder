@@ -1,0 +1,29 @@
+@startuml
+
+database "Resources (HTML/CSS/JS)" as RESOURCES
+database "JSON file" as CONFIG
+database "Video/Audio files" as VIDEOS
+database "$H5R_OUTPUT_DIR" as H5R_OUTPUT_DIR
+
+package "Container" {
+
+    component [H5Recorder] as H5R
+    component [Headless Web Browser] as BROWSER
+    interface "HTTP Server" as HTTP
+    interface "FFMPEG" as FFMPEG
+    interface "/dev/STDOUT" as STDOUT
+
+    H5R .. HTTP
+    CONFIG --> H5R
+    RESOURCES --> HTTP
+    HTTP --> BROWSER
+    BROWSER --> H5R
+    H5R --> STDOUT  : "Browser\nscreenshots\nstream"
+
+    STDOUT --> FFMPEG
+    VIDEOS --> FFMPEG
+
+    FFMPEG --> H5R_OUTPUT_DIR  : ChromaKey-based merge
+}
+
+@enduml

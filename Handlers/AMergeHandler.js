@@ -1,5 +1,7 @@
 const { exec } = require('child_process');
 const { amerge } = require('../ffmpegUtil')
+const path = require('path');
+const { H5R_OUTPUT_DIR } = process.env;
 
 function handle(entries, inVideos, cb) {
 console.log('AMergeHandler', entries, inVideos)
@@ -18,7 +20,7 @@ console.log('AMergeHandler', entries, inVideos)
     }
     // every entry outputs a video but not all have audio object
     if (entries[i].audio && entries[i].audio.length > 0) {
-      let output = `${new Date().getTime()}_amerge.mp4`
+      let output = path.resolve(H5R_OUTPUT_DIR, `${new Date().getTime()}_amerge.mp4`);
       let cmd = amerge(entries[i].audio, inVideos[i], output)
       outputs.push(output)
 

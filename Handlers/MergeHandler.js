@@ -1,10 +1,12 @@
 const { exec } = require('child_process');
 const { merge } = require('../ffmpegUtil')
+const path = require('path');
+const { H5R_OUTPUT_DIR } = process.env;
 
 function handle(infiles, cb) {
     console.log('MergeHandler', infiles)
     if (infiles && infiles.length > 0) {
-      let output = `${new Date().getTime()}_merge.mp4`
+      let output = path.resolve(H5R_OUTPUT_DIR, `${new Date().getTime()}_merge.mp4`);
     	let cmd = merge(infiles, output)
 
       console.log('merge', 'executing', cmd)

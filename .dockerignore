@@ -2,6 +2,9 @@ docs
 readme.gif
 README.md
 .gitlab-ci.yml
+.git
+docker-compose.yml
+readme.gif
 
 output
 sample.json

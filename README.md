@@ -17,7 +17,7 @@ docker run \
     # Internet access might be required to load some webpages (HTTP/HTTPS urls)
 	--network host \
     # my docker image, obviously
-	yoga1290/h5recorder:0.0.47 \
+	yoga1290/h5recorder:0.0.48 \
     # a config file path to use, relative to the container's working directory (/usr/app/):
 	sample.json
 ```
